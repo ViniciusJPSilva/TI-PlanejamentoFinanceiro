@@ -1,0 +1,30 @@
+CREATE SEQUENCE "seq-orcamento";
+CREATE SEQUENCE "seq-receita";
+CREATE SEQUENCE "seq-despesa";
+
+CREATE TABLE orcamento (
+	idorcamento BIGINT NOT NULL DEFAULT NEXTVAL('seq-orcamento'),
+	nome VARCHAR(100) NOT NULL UNIQUE,
+	CONSTRAINT PK_Orcamento PRIMARY KEY (idorcamento)
+);
+
+CREATE TABLE despesa (
+	iddespesa BIGINT NOT NULL DEFAULT NEXTVAL('seq-despesa'),
+	idorcamento BIGINT NOT NULL,
+	data VARCHAR(10) NOT NULL,
+	descricao VARCHAR(100) NOT NULL,
+	situacao VARCHAR(100),
+	valor REAL NOT NULL,
+	CONSTRAINT PK_Despesa PRIMARY KEY (iddespesa),
+	CONSTRAINT FK_Orcamento FOREIGN KEY (idorcamento) references orcamento ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE receita (
+	idreceita BIGINT NOT NULL DEFAULT NEXTVAL('seq-receita'),
+	idorcamento BIGINT NOT NULL,
+	mes INT NOT NULL,
+	tipo VARCHAR(100) NOT NULL,
+	valor REAL NOT NULL,
+	CONSTRAINT PK_Receita PRIMARY KEY (idreceita),
+	CONSTRAINT FK_Orcamento FOREIGN KEY (idorcamento) references orcamento ON DELETE CASCADE ON UPDATE CASCADE
+);
